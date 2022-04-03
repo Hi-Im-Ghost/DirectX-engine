@@ -1,0 +1,43 @@
+#include <Windows.h>
+
+int CALLBACK WinMain( 
+	HINSTANCE hInstance, //wskaŸniki do struktur, które przechowuj¹ informacje o naszym programie
+	HINSTANCE hPrevInstance, //w którym s¹ ³adowane do pamiêci. Drugi zawsze bêdzie NULL. 
+	LPSTR lpCmdLine, //Linia poleceñ jako pojedynczy ci¹g znaków
+	int nCmdShow) //Info w jaki sposób okno powinno byæ pokazane
+{
+	const auto pClassName = "DirectX-Engine";
+	//Klasa okna
+	WNDCLASSEX winclass = { 0 }; //struktura konfiguracyjna 
+	winclass.cbSize = sizeof(winclass); //ustawienie rozmiaru struktury 
+	winclass.style = CS_OWNDC; //ustawienie stylu
+	winclass.lpfnWndProc = DefWindowProc; //wskaŸnik do procedury okna
+	winclass.cbClsExtra = 0; //iloœæ dodatkowych bajtów w strukturze po stronie API
+	winclass.cbWndExtra = 0; //iloœæ dodatkowych bajtów dla ka¿dego okna, które zosta³o stworzone przez t¹ klase
+	winclass.hInstance = hInstance; //dojœcie do instancji aplikacji
+	winclass.hIcon = nullptr; //ikona kursora
+	winclass.hCursor = nullptr; //kursor
+	winclass.hbrBackground = nullptr; //t³o
+	winclass.lpszMenuName = nullptr; //nazwa menu
+	winclass.lpszClassName = pClassName; //nazwa klasy
+	winclass.hIconSm = nullptr; //ikona
+	RegisterClassEx(&winclass); //rejestracja klasy. Ex oznacza nowsz¹ wersje
+	//Instancja okna
+	HWND hWnd = CreateWindowEx(
+		0, //style
+		pClassName, //nazwa klasy
+		"DEngine", //nazwa okna
+		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
+		200, 200, //po³o¿enie okna
+		640, 480, //rozdzielczoœæ
+		nullptr, //wskaŸnik na rodzica okna
+		nullptr, //wskaŸnik do menu
+		hInstance, //instancja
+		nullptr //niestandardowy
+	);
+	//Wyœwietl okno
+	ShowWindow(hWnd, SW_SHOW);
+
+	while (true);
+	return 0;
+}
