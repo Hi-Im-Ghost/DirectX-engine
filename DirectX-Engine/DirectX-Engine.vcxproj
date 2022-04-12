@@ -157,10 +157,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ChiliWin.cpp" />
+    <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowsMessageManager.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChiliWin.h" />
+    <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsMessageManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
