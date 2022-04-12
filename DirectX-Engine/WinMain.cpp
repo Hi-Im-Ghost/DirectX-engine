@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include "WindowsMessageManager.h"
-
+#include <sstream>
 //Procedura dla okna
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -16,6 +16,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		if (wParam == 'F')
 		{
+			//Wpisz w miejsce tytu³u okna
 			SetWindowText(hWnd, "Nazwa zmieniona :)");
 		}
 		break;
@@ -23,10 +24,31 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYUP:
 		if (wParam == 'F')
 		{
+			//Wpisz w miejsce tytu³u okna
 			SetWindowText(hWnd, "Pusciles klawisz :)");
 		}
 		break;
-
+	//Ciagi znakow 
+	case WM_CHAR:
+		{
+		static std::string temp;
+		//Zapisuj znaki do zmiennej 
+		temp.push_back((char)wParam);
+		//Wpisz w miejsce tytu³u okna
+		SetWindowText(hWnd, temp.c_str());
+		}
+		break;
+	//Lewy przycisk myszy
+	case WM_LBUTTONDOWN: 
+		{
+		//Pobierz wspó³rzêdne myszy
+		POINTS pt = MAKEPOINTS(lParam);
+		std::ostringstream os;
+		os << "<" << pt.x << "," << pt.y << ">";
+		//Wpisz w miejsce tytu³u okna
+		SetWindowText(hWnd, os.str().c_str());
+		}
+		break;
 	}
 	//Zwracamy procedure okna
 	return DefWindowProc(hWnd, msg, wParam, lParam);
