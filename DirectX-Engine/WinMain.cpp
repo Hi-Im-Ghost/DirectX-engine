@@ -1,5 +1,18 @@
 #include <Windows.h>
 
+//Procedura dla okna
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch (msg)
+	{
+	case WM_CLOSE:
+		PostQuitMessage(69);
+		break;
+	}
+	//Zwracamy procedure okna
+	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
 int CALLBACK WinMain( 
 	HINSTANCE hInstance, //wskaŸniki do struktur, które przechowuj¹ informacje o naszym programie
 	HINSTANCE hPrevInstance, //w którym s¹ ³adowane do pamiêci. Drugi zawsze bêdzie NULL. 
@@ -11,7 +24,7 @@ int CALLBACK WinMain(
 	WNDCLASSEX winclass = { 0 }; //struktura konfiguracyjna 
 	winclass.cbSize = sizeof(winclass); //ustawienie rozmiaru struktury 
 	winclass.style = CS_OWNDC; //ustawienie stylu
-	winclass.lpfnWndProc = DefWindowProc; //wskaŸnik do procedury okna
+	winclass.lpfnWndProc = WndProc; //wskaŸnik do procedury okna
 	winclass.cbClsExtra = 0; //iloœæ dodatkowych bajtów w strukturze po stronie API
 	winclass.cbWndExtra = 0; //iloœæ dodatkowych bajtów dla ka¿dego okna, które zosta³o stworzone przez t¹ klase
 	winclass.hInstance = hInstance; //dojœcie do instancji aplikacji
@@ -38,6 +51,25 @@ int CALLBACK WinMain(
 	//Wyœwietl okno
 	ShowWindow(hWnd, SW_SHOW);
 
-	while (true);
-	return 0;
+	//Struktura wiadomoœci
+	MSG msg;
+	//
+	BOOL gResult;
+	//Pêtla g³ówna
+	while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+	{
+		//Przetwarzanie wiadomosci
+		TranslateMessage(&msg);
+		//Przekazanie wiadomoœci do okna
+		DispatchMessage(&msg);
+	}
+	if (gResult == -1)
+	{
+		return -1;
+	}
+	else
+	{
+		return msg.wParam;
+	}
+
 }
