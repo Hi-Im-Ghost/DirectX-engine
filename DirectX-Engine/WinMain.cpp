@@ -1,13 +1,32 @@
 #include <Windows.h>
+#include "WindowsMessageManager.h"
 
 //Procedura dla okna
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	static WindowsMessageManager message;
+	OutputDebugString(message(msg, lParam, wParam).c_str());
 	switch (msg)
 	{
+	//Akcja po nacisnieciu X okna
 	case WM_CLOSE:
 		PostQuitMessage(69);
 		break;
+	//Akcja po naciscieniu klawisza
+	case WM_KEYDOWN:
+		if (wParam == 'F')
+		{
+			SetWindowText(hWnd, "Nazwa zmieniona :)");
+		}
+		break;
+		//Akcja po puszczeniu klawisza
+	case WM_KEYUP:
+		if (wParam == 'F')
+		{
+			SetWindowText(hWnd, "Pusciles klawisz :)");
+		}
+		break;
+
 	}
 	//Zwracamy procedure okna
 	return DefWindowProc(hWnd, msg, wParam, lParam);
