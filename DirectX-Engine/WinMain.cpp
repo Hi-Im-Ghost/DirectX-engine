@@ -7,27 +7,41 @@ int CALLBACK WinMain(
 	LPSTR lpCmdLine, //Linia poleceñ jako pojedynczy ci¹g znaków
 	int nCmdShow) //Info w jaki sposób okno powinno byæ pokazane
 {
-	Window wind(800, 480, "DenginX");
+	try {
+		Window wind(800, 480, "DenginX");
 
-	//Struktura wiadomoœci
-	MSG msg;
-	//
-	BOOL gResult;
-	//Pêtla g³ówna
-	while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
-	{
-		//Przetwarzanie wiadomosci
-		TranslateMessage(&msg);
-		//Przekazanie wiadomoœci do okna
-		DispatchMessage(&msg);
+		//Struktura wiadomoœci
+		MSG msg;
+		//
+		BOOL gResult;
+		//Pêtla g³ówna
+		while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+		{
+			//Przetwarzanie wiadomosci
+			TranslateMessage(&msg);
+			//Przekazanie wiadomoœci do okna
+			DispatchMessage(&msg);
+		}
+		if (gResult == -1)
+		{
+			return -1;
+		}
+		else
+		{
+			return msg.wParam;
+		}
 	}
-	if (gResult == -1)
+	catch (const Exception& e)
 	{
-		return -1;
+		MessageBox(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
 	}
-	else
+	catch (const std::exception& e)
 	{
-		return msg.wParam;
+		MessageBox(nullptr, e.what(), "WinMain Exception", MB_OK | MB_ICONEXCLAMATION);
 	}
-
+	catch (...)
+	{
+		MessageBox(nullptr, "No details available", "Unknown Exception", MB_OK | MB_ICONEXCLAMATION);
+	}
+	return -1;
 }

@@ -1,6 +1,6 @@
 #include "Window.h"
-
-
+#include <sstream>
+#include "resource.h"
 //
 Window::WindowClass Window::WindowClass::wndClass;
 
@@ -14,12 +14,12 @@ Window::WindowClass::WindowClass() noexcept:
 	winclass.cbClsExtra = 0; //iloœæ dodatkowych bajtów w strukturze po stronie API
 	winclass.cbWndExtra = 0; //iloœæ dodatkowych bajtów dla ka¿dego okna, które zosta³o stworzone przez t¹ klase
 	winclass.hInstance = GetInstance(); //dojœcie do instancji aplikacji
-	winclass.hIcon = nullptr; //ikona kursora
+	winclass.hIcon = static_cast<HICON>(LoadImage(GetInstance(), MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 32, 32, 0)); //ikona 
 	winclass.hCursor = nullptr; //kursor
 	winclass.hbrBackground = nullptr; //t³o
 	winclass.lpszMenuName = nullptr; //nazwa menu
 	winclass.lpszClassName = GetName(); //nazwa klasy
-	winclass.hIconSm = nullptr; //ikona
+	winclass.hIconSm = static_cast<HICON>(LoadImage(GetInstance(), MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 32, 32, 0)); ; //ikona
 	RegisterClassEx(&winclass); //rejestracja klasy. Ex oznacza nowsz¹ wersje
 }
 
@@ -40,7 +40,7 @@ HINSTANCE Window::WindowClass::GetInstance() noexcept
 
 
 // 
-Window::Window(int width, int height, const char* name) noexcept
+Window::Window(int width, int height, const char* name) 
 {
 	// rozmiar okna
 	RECT wr;
@@ -49,7 +49,10 @@ Window::Window(int width, int height, const char* name) noexcept
 	wr.top = 100;
 	wr.bottom = height + wr.top;
 	//Dostosowanie by rozmiar okna by³ dla ca³oœci po¿¹danego regionu klienta
-	AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)))
+	{
+		throw CHWND_LAST_EXCEPT();
+	};
 	//Instancja okna
 	hWnd = CreateWindow(
 		WindowClass::GetName(), //nazwa klasy
@@ -63,6 +66,11 @@ Window::Window(int width, int height, const char* name) noexcept
 		WindowClass::GetInstance(), //instancja
 		this //niestandardowy
 	);
+	//Sprawdzanie bledow
+	if (hWnd == nullptr)
+	{
+		throw CHWND_LAST_EXCEPT();
+	}
 	//Wyœwietl okno
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 }
@@ -151,4 +159,54 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 
 	//Zwracamy procedure okna
 	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+Window::Exceptions::Exceptions(int line, const char* file, HRESULT hr) noexcept:
+	Exception(line, file),
+	hr(hr)
+{}
+
+const char* Window::Exceptions::what() const noexcept
+{
+	std::ostringstream oss;
+	oss << GetType() << std::endl
+		<< "Error Code: " << GetErrorCode() << std::endl
+		<< "Description: " << GetErrorString() << std::endl
+		<< GetOriginString();
+	buffer = oss.str();
+	return buffer.c_str();
+}
+
+const char* Window::Exceptions::GetType() const noexcept
+{
+	return "Window Exception";
+}
+
+std::string Window::Exceptions::TranslateErrorCode(HRESULT hr) noexcept
+{
+	char* pMsgBuf = nullptr;
+	//Daj opis dla tego b³êdu
+	DWORD nMsgLen = FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		reinterpret_cast<LPSTR>(&pMsgBuf), 0, nullptr
+	);
+	if (nMsgLen == 0)
+	{
+		return "Unidentified error code";
+	}
+	std::string errorString = pMsgBuf;
+	LocalFree(pMsgBuf);
+	return errorString;
+}
+
+HRESULT Window::Exceptions::GetErrorCode() const noexcept
+{
+	return hr;
+}
+
+std::string Window::Exceptions::GetErrorString() const noexcept
+{
+	return TranslateErrorCode(hr);
 }

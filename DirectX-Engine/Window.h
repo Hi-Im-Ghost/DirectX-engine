@@ -1,13 +1,27 @@
 #pragma once
 #include "ChiliWin.h"
+#include "Exception.h"
 #include <sstream>
 #include "WindowsMessageManager.h"
 
 //Klasa reprezentuj¹ca okno
 class Window
 {
+public:
+	class Exceptions : public Exception
+	{
+	public:
+		Exceptions(int line, const char* file, HRESULT hr) noexcept;
+		const char* what() const noexcept override;
+		virtual const char* GetType() const noexcept;
+		//T³umaczenie kodu b³edu
+		static std::string TranslateErrorCode(HRESULT hr) noexcept;
+		HRESULT GetErrorCode() const noexcept;
+		std::string GetErrorString() const noexcept;
+	private:
+		HRESULT hr;
+	};
 private:
-	//singleton
 	class WindowClass
 	{
 	public:
@@ -27,7 +41,7 @@ private:
 	};
 public:
 	//Konstruktor tworzacy okno
-	Window(int width, int height, const char* name) noexcept;
+	Window(int width, int height, const char* name);
 	//Destruktor niszczacy okno
 	~Window();
 	Window(const Window&) = delete;
@@ -45,3 +59,6 @@ private:
 	HWND hWnd;
 };
 
+// Makro dla wyjatków
+#define CHWND_EXCEPT( hr ) Window::Exceptions( __LINE__,__FILE__,hr )
+#define CHWND_LAST_EXCEPT() Window::Exceptions(__LINE__,__FILE__,GetLastError())

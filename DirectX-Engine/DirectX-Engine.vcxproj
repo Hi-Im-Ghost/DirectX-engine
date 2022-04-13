@@ -158,14 +158,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ChiliWin.cpp" />
+    <ClCompile Include="Exception.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WindowsMessageManager.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h" />
+    <ClInclude Include="Exception.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsMessageManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DirectX-Engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="DenginX.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
