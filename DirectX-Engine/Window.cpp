@@ -40,7 +40,9 @@ HINSTANCE Window::WindowClass::GetInstance() noexcept
 
 
 // 
-Window::Window(int width, int height, const char* name) 
+Window::Window(int width, int height, const char* name):
+	width(width),
+	height(height)
 {
 	// rozmiar okna
 	RECT wr;
@@ -49,10 +51,10 @@ Window::Window(int width, int height, const char* name)
 	wr.top = 100;
 	wr.bottom = height + wr.top;
 	//Dostosowanie by rozmiar okna by³ dla ca³oœci po¿¹danego regionu klienta
-	if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)))
+	if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)==0)
 	{
 		throw CHWND_LAST_EXCEPT();
-	};
+	}
 	//Instancja okna
 	hWnd = CreateWindow(
 		WindowClass::GetName(), //nazwa klasy
@@ -80,6 +82,13 @@ Window::~Window()
 	DestroyWindow(hWnd);
 }
 
+void Window::SetTitle(const std::string& title)
+{
+	if (SetWindowText(hWnd, title.c_str()) == 0)
+	{
+		throw CHWND_LAST_EXCEPT();
+	}
+}
 
 LRESULT WINAPI Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
@@ -118,43 +127,88 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		return 0;
-		//Akcja po naciscieniu klawisza
+
+	//wyczyœæ stan klawiszy, gdy okno traci fokus, aby zapobiec "zablokowaniu" danych wejœciowych
+	case WM_KILLFOCUS:
+		kbd.ClearState();
+		break;
+	//KLAWIATURA
+	//Akcja po naciscieniu klawisza
 	case WM_KEYDOWN:
-		if (wParam == 'F')
+	case WM_SYSKEYDOWN:
+		if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled()) //autorepeat
 		{
-			//Wpisz w miejsce tytu³u okna
-			SetWindowText(hWnd, "Nazwa zmieniona :)");
+			kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
 		}
 		break;
-		//Akcja po puszczeniu klawisza
 	case WM_KEYUP:
-		if (wParam == 'F')
+	case WM_SYSKEYUP:
+		kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
+		break;
+	case WM_CHAR:
+		kbd.OnChar(static_cast<unsigned char>(wParam));
+		break;
+	//MYSZKA
+	case WM_MOUSEMOVE:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		// w oknie przenos i przechwycaj
+		if (pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height)
 		{
-			//Wpisz w miejsce tytu³u okna
-			SetWindowText(hWnd, "Pusciles klawisz :)");
+			mouse.OnMouseMove(pt.x, pt.y);
+			if (!mouse.IsInWindow())
+			{
+				SetCapture(hWnd);
+				mouse.OnMouseEnter();
+			}
+		}
+		// jesli nie w oknie to utrzymuj przechwytwanie jesli trzymamy przycisk
+		else
+		{
+			if (wParam & (MK_LBUTTON | MK_RBUTTON))
+			{
+				mouse.OnMouseMove(pt.x, pt.y);
+			}
+			// jesli przycisk puscimy to zwolnij przechtytywanie 
+			else
+			{
+				ReleaseCapture();
+				mouse.OnMouseLeave();
+			}
 		}
 		break;
-		//Ciagi znakow 
-	case WM_CHAR:
-	{
-		static std::string temp;
-		//Zapisuj znaki do zmiennej 
-		temp.push_back((char)wParam);
-		//Wpisz w miejsce tytu³u okna
-		SetWindowText(hWnd, temp.c_str());
 	}
-	break;
-	//Lewy przycisk myszy
 	case WM_LBUTTONDOWN:
 	{
-		//Pobierz wspó³rzêdne myszy
-		POINTS pt = MAKEPOINTS(lParam);
-		std::ostringstream os;
-		os << "<" << pt.x << "," << pt.y << ">";
-		//Wpisz w miejsce tytu³u okna
-		SetWindowText(hWnd, os.str().c_str());
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnLeftPressed(pt.x, pt.y);
+		break;
 	}
-	break;
+	case WM_RBUTTONDOWN:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnRightPressed(pt.x, pt.y);
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnLeftReleased(pt.x, pt.y);
+		break;
+	}
+	case WM_RBUTTONUP:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnRightReleased(pt.x, pt.y);
+		break;
+	}
+	case WM_MOUSEWHEEL:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		const int delta = GET_WHEEL_DELTA_WPARAM(wParam);
+		mouse.OnWheelDelta(pt.x, pt.y, delta);
+		break;
+	}
 	}
 
 	//Zwracamy procedure okna
