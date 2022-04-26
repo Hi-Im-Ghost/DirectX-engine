@@ -1,11 +1,14 @@
 #pragma once
+#include <sstream>
+#include <optional>
+#include <memory>
 #include "ChiliWin.h"
 #include "Exception.h"
-#include <sstream>
 #include "Message.h"
 #include "Keyboard.h"
 #include "Mouse.h"
-#include <optional>
+#include "Graphics.h"
+
 
 //Klasa reprezentuj¹ca okno
 class Window
@@ -14,6 +17,8 @@ private:
 	int width;
 	int height;
 	HWND hWnd;
+	//Unikalny skaŸnik dla grafiki d3d
+	std::unique_ptr<Graphics> gD3g;
 
 	//Metoda do konfigurowania wiadomosci
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
@@ -63,6 +68,8 @@ public:
 	//Metoda do zmiany tytulu okna
 	void SetTitle(const std::string& title);
 	static std::optional<int> ProcessMessages();
+	//Uzyskiwanie dostêpu do osadzonej grafiki
+	Graphics& D3g();
 
 	Keyboard kbd;
 	Mouse mouse;

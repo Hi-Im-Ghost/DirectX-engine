@@ -76,6 +76,8 @@ Window::Window(int width, int height, const char* name):
 	}
 	//Wyœwietl okno
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
+	//Tworzenie obrazu grafiki d3d
+	gD3g = std::make_unique<Graphics>(hWnd);
 }
 
 Window::~Window()
@@ -85,6 +87,7 @@ Window::~Window()
 
 void Window::SetTitle(const std::string& title)
 {
+
 	if (SetWindowText(hWnd, title.c_str()) == 0)
 	{
 		throw CHWND_LAST_EXCEPT();
@@ -112,6 +115,11 @@ std::optional<int> Window::ProcessMessages()
 
 	// Nic nie zwraca gdy nie zamykamy aplikacji
 	return {};
+}
+
+Graphics& Window::D3g()
+{
+	return *gD3g;
 }
 
 LRESULT WINAPI Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept

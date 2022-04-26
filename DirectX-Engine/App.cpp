@@ -21,5 +21,8 @@ int App::Start()
 
 void App::DoFrame()
 {
-
+	//Przy pomocy sin w czasie manipulujemy kolorem
+	const float c = sin(timer.Peek()) / 2.0f + 0.5f;
+	win.D3g().ClearBuffer(c, 1.0f, c);
+	win.D3g().EndFrame();
 }

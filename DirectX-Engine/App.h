@@ -1,5 +1,7 @@
 #pragma once
 #include "Window.h"
+#include "Timer.h"
+
 class App
 {
 public:
@@ -7,8 +9,10 @@ public:
 	// Main loop
 	int Start();
 private:
+	//Wykonywanie co klatke
 	void DoFrame();
 private:
 	Window win;
+	Timer timer;
 };
 

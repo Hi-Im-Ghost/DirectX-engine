@@ -160,6 +160,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="ChiliWin.cpp" />
     <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="Graphics.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Mouse.h" />
