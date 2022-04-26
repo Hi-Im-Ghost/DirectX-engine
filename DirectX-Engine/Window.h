@@ -2,9 +2,10 @@
 #include "ChiliWin.h"
 #include "Exception.h"
 #include <sstream>
-#include "WindowsMessageManager.h"
+#include "Message.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include <optional>
 
 //Klasa reprezentuj¹ca okno
 class Window
@@ -61,6 +62,7 @@ public:
 	Window& operator=(const Window&) = delete;
 	//Metoda do zmiany tytulu okna
 	void SetTitle(const std::string& title);
+	static std::optional<int> ProcessMessages();
 
 	Keyboard kbd;
 	Mouse mouse;

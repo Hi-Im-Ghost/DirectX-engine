@@ -1,6 +1,7 @@
 #include "Window.h"
 #include <sstream>
 #include "resource.h"
+
 //
 Window::WindowClass Window::WindowClass::wndClass;
 
@@ -88,6 +89,29 @@ void Window::SetTitle(const std::string& title)
 	{
 		throw CHWND_LAST_EXCEPT();
 	}
+}
+
+
+std::optional<int> Window::ProcessMessages()
+{
+	MSG msg;
+	// Gdy kolejka zawiera powiadomienia to je usuñ i wyœlij
+	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	{
+		// Sprawdzanie czy wyszlismy 
+		if (msg.message == WM_QUIT)
+		{
+			// opcjonalnie zwróc sygnalizacje do wyjscia
+			return (int)msg.wParam;
+		}
+
+		// Publikowanie powiadomien
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	// Nic nie zwraca gdy nie zamykamy aplikacji
+	return {};
 }
 
 LRESULT WINAPI Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept

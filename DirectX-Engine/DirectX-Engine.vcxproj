@@ -157,22 +157,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="App.cpp" />
     <ClCompile Include="ChiliWin.cpp" />
     <ClCompile Include="Exception.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Message.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="WindowsMessageManager.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="App.h" />
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Message.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="WindowsMessageManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX-Engine.rc" />
