@@ -119,6 +119,11 @@ std::optional<int> Window::ProcessMessages()
 
 Graphics& Window::D3g()
 {
+	//Wyj¹tek gdy spróbujemy uzyskaæ grafikê ale wskaŸnik nie zosta³ jeszcze ustawiony
+	if (!gD3g)
+	{
+		throw CHWND_NOGFX_EXCEPT();
+	}
 	return *gD3g;
 }
 
@@ -247,52 +252,65 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-Window::Exceptions::Exceptions(int line, const char* file, HRESULT hr) noexcept:
-	Exception(line, file),
-	hr(hr)
-{}
-
-const char* Window::Exceptions::what() const noexcept
-{
-	std::ostringstream oss;
-	oss << GetType() << std::endl
-		<< "Error Code: " << GetErrorCode() << std::endl
-		<< "Description: " << GetErrorString() << std::endl
-		<< GetOriginString();
-	buffer = oss.str();
-	return buffer.c_str();
-}
-
-const char* Window::Exceptions::GetType() const noexcept
-{
-	return "Window Exception";
-}
-
+// Wyj¹tki okna
 std::string Window::Exceptions::TranslateErrorCode(HRESULT hr) noexcept
 {
 	char* pMsgBuf = nullptr;
-	//Daj opis dla tego b³êdu
-	DWORD nMsgLen = FormatMessage(
+	// Przydziel pamiêc dla ³añcucha b³êdów i wska¿ na niego nasz wskaŸnik
+	const DWORD nMsgLen = FormatMessage(
 		FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 		nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 		reinterpret_cast<LPSTR>(&pMsgBuf), 0, nullptr
 	);
+	// Zwrócona d³ugoœæ ci¹gu 0 oznacza awariê
 	if (nMsgLen == 0)
 	{
 		return "Unidentified error code";
 	}
+	// skopiuj ci¹g b³êdu z bufora przydzielonego do systemu Windows do std::string
 	std::string errorString = pMsgBuf;
+	// zwolnij bufor systemu
 	LocalFree(pMsgBuf);
 	return errorString;
 }
 
-HRESULT Window::Exceptions::GetErrorCode() const noexcept
+
+Window::HrException::HrException(int line, const char* file, HRESULT hr) noexcept
+	:
+	Exception(line, file),
+	hr(hr)
+{}
+
+const char* Window::HrException::what() const noexcept
+{
+	std::ostringstream oss;
+	oss << GetType() << std::endl
+		<< "[Error Code] 0x" << std::hex << std::uppercase << GetErrorCode()
+		<< std::dec << " (" << (unsigned long)GetErrorCode() << ")" << std::endl
+		<< "[Description] " << GetErrorDescription() << std::endl
+		<< GetOriginString();
+	buffer = oss.str();
+	return buffer.c_str();
+}
+
+const char* Window::HrException::GetType() const noexcept
+{
+	return "Window Exception";
+}
+
+HRESULT Window::HrException::GetErrorCode() const noexcept
 {
 	return hr;
 }
 
-std::string Window::Exceptions::GetErrorString() const noexcept
+std::string Window::HrException::GetErrorDescription() const noexcept
 {
-	return TranslateErrorCode(hr);
+	return Exceptions::TranslateErrorCode(hr);
+}
+
+
+const char* Window::NoGfxException::GetType() const noexcept
+{
+	return "Window Exception [No Graphics]";
 }
