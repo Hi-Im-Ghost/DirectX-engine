@@ -7,7 +7,7 @@ namespace wrl = Microsoft::WRL;
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
 
-// sprawdzanie wyj¹tków grafiki/wyrzucanie makr
+// sprawdzanie wyjÄ…tkÃ³w grafiki/wyrzucanie makr
 #define GFX_EXCEPT_NOINFO(hr) Graphics::HrException( __LINE__,__FILE__,(hr) )
 #define GFX_THROW_NOINFO(hrcall) if( FAILED( hr = (hrcall) ) ) throw Graphics::HrException( __LINE__,__FILE__,hr )
 
@@ -26,7 +26,7 @@ namespace wrl = Microsoft::WRL;
 
 Graphics::Graphics(HWND hWnd)
 {
-	//Struktura deskryptorów
+	//Struktura deskryptorÃ³w
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = 0;
 	sd.BufferDesc.Height = 0;
@@ -49,9 +49,9 @@ Graphics::Graphics(HWND hWnd)
 	swapCreateFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	// Do sprawdzania wyników funkcji d3d
+	// Do sprawdzania wynikÃ³w funkcji d3d
 	HRESULT hr;
-	//Tworzenie buforów, ³añcuchów i kontekstu dla renderowania 
+	//Tworzenie buforÃ³w, Å‚aÅ„cuchÃ³w i kontekstu dla renderowania 
 	GFX_THROW_INFO(D3D11CreateDeviceAndSwapChain(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
@@ -77,18 +77,18 @@ Graphics::Graphics(HWND hWnd)
 void Graphics::EndFrame()
 {
 	HRESULT hr;
-#ifndef NDEBUG //Jesli w trybie debugowania to wywo³ujemy menedazer aby uzyskac wszystkie informacje
+#ifndef NDEBUG //Jesli w trybie debugowania to wywoÅ‚ujemy menedazer aby uzyskac wszystkie informacje
 	infoManager.Set();
-#endif//Jeœli obecna klatka da kod b³êdu, który oznacza usuniecie urz¹dzenia i jest on specjalny
+#endif//JeÅ›li obecna klatka da kod bÅ‚Ä™du, ktÃ³ry oznacza usuniecie urzÄ…dzenia i jest on specjalny
 	if (FAILED(hr = gSwap->Present(1u, 0u)))
 	{
 		if (hr == DXGI_ERROR_DEVICE_REMOVED)
 		{
-			//Wywo³aj usuniecie urz¹dzenia
+			//WywoÅ‚aj usuniecie urzÄ…dzenia
 			throw GFX_DEVICE_REMOVED_EXCEPT(gDevice->GetDeviceRemovedReason());
 		}
 		else
-		{	//Jeœli nie to tworzymy zwyk³y wyj¹tek graficzny
+		{	//JeÅ›li nie to tworzymy zwykÅ‚y wyjÄ…tek graficzny
 			throw GFX_EXCEPT(hr);
 		}
 	}
@@ -104,7 +104,7 @@ void Graphics::DrawTriangle()
 {
 	namespace wrl = Microsoft::WRL;
 	HRESULT hr;
-	//Struktura wierzcho³ków
+	//Struktura wierzchoÅ‚kÃ³w
 	struct Vertex
 	{
 		float x;
@@ -120,7 +120,7 @@ void Graphics::DrawTriangle()
 
 	wrl::ComPtr<ID3D11Buffer> gVertexBuffer;
 	D3D11_BUFFER_DESC bufferDesc = {};
-	//Wype³nienie w³aœciwoœci buffora
+	//WypeÅ‚nienie wÅ‚aÅ›ciwoÅ›ci buffora
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.CPUAccessFlags = 0u;
@@ -138,48 +138,83 @@ void Graphics::DrawTriangle()
 	const UINT stride = sizeof(Vertex);
 	//Przesuniecia
 	const UINT offset = 0u;
-	//Ustawienie buforów dla wierzcho³ków
-	gContext->IASetVertexBuffers(0u,1u,&gVertexBuffer,&stride,&offset);
-
-
-	//Tworzenie vertex shadera
-	wrl::ComPtr<ID3D11VertexShader> gVertexShader;
-	//Wczytywanie pliku do bloba czyli pliku danych
-	wrl::ComPtr<ID3DBlob> gBlob;
-	GFX_THROW_INFO(D3DReadFileToBlob(L"VertexShader.cso", &gBlob));
-	//Urzadzenie tworzy vertex shader
-	GFX_THROW_INFO(gDevice->CreateVertexShader(gBlob->GetBufferPointer(), gBlob->GetBufferSize(), nullptr, &gVertexShader));
-	
-
-	//Powi¹zanie vertex shadera z potokiem
-	gContext->VSSetShader(gVertexShader.Get(), nullptr, 0u);
+	//Ustawienie buforÃ³w dla wierzchoÅ‚kÃ³w
+	gContext->IASetVertexBuffers(0u,1u,gVertexBuffer.GetAddressOf(), &stride, &offset);
 
 
 	//Tworzenie pixel shadera
 	wrl::ComPtr<ID3D11PixelShader> gPixelShader;
+	//Wczytywanie pliku do bloba czyli pliku danych
+	wrl::ComPtr<ID3DBlob> gBlob;
 	GFX_THROW_INFO(D3DReadFileToBlob(L"PixelShader.cso", &gBlob));
 	GFX_THROW_INFO(gDevice->CreatePixelShader(gBlob->GetBufferPointer(), gBlob->GetBufferSize(), nullptr, &gPixelShader));
 
-	// Powi¹zanie pixel shadera z potokiem
+	// PowiÄ…zanie pixel shadera z potokiem
 	gContext->PSSetShader(gPixelShader.Get(), nullptr, 0u);
 
 
+	//Tworzenie vertex shadera
+	wrl::ComPtr<ID3D11VertexShader> gVertexShader;
+	GFX_THROW_INFO(D3DReadFileToBlob(L"VertexShader.cso", &gBlob));
+	//Urzadzenie tworzy vertex shader
+	GFX_THROW_INFO(gDevice->CreateVertexShader(gBlob->GetBufferPointer(), gBlob->GetBufferSize(), nullptr, &gVertexShader));
+	
+	//PowiÄ…zanie vertex shadera z potokiem
+	gContext->VSSetShader(gVertexShader.Get(), nullptr, 0u);
+
+
+	//ukÅ‚ad danych wejÅ›ciowych
+	wrl::ComPtr<ID3D11InputLayout> gInputLayout;
+	const D3D11_INPUT_ELEMENT_DESC inputElement[] =
+	{
+		{ "Position",0,DXGI_FORMAT_R32G32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+	};
+	GFX_THROW_INFO(gDevice->CreateInputLayout(
+		inputElement, (UINT)std::size(inputElement),
+		gBlob->GetBufferPointer(),
+		gBlob->GetBufferSize(),
+		&gInputLayout
+	));
+
+	// PowiÄ…zanie vertex shadera
+	gContext->IASetInputLayout(gInputLayout.Get());
+
+
+	// PowiÄ…zanie renderowania
+	gContext->OMSetRenderTargets(1u, gTarget.GetAddressOf(), nullptr);
+
+
+	// Ustaw topologiÄ™ pierwotnÄ… na listÄ™ trÃ³jkÄ…tÃ³w
+	gContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
+	// skonfiguruj widok
+	D3D11_VIEWPORT viewPort;
+	viewPort.Width = 800;
+	viewPort.Height = 600;
+	viewPort.MinDepth = 0;
+	viewPort.MaxDepth = 1;
+	viewPort.TopLeftX = 0;
+	viewPort.TopLeftY = 0;
+	gContext->RSSetViewports(1u, &viewPort);
+
+	//Rysuj
 	GFX_THROW_INFO_ONLY(gContext->Draw((UINT)std::size(vertices), 0u));
 }
 
-// Wyj¹tki grafiki d3d
+// WyjÄ…tki grafiki d3d
 Graphics::HrException::HrException(int line, const char* file, HRESULT hr, std::vector<std::string> infoMsgs) noexcept
 	:
 	Exception(line, file),
 	hr(hr)
 {
-	// po³¹cz wszystkie wiadomoœci informacyjne z nowymi liniami w jeden ci¹g
+	// poÅ‚Ä…cz wszystkie wiadomoÅ›ci informacyjne z nowymi liniami w jeden ciÄ…g
 	for (const auto& m : infoMsgs)
 	{
 		info += m;
 		info.push_back('\n');
 	}
-	// usuñ ostatni¹ now¹ liniê, jeœli istnieje
+	// usuÅ„ ostatniÄ… nowÄ… liniÄ™, jeÅ›li istnieje
 	if (!info.empty())
 	{
 		info.pop_back();
@@ -240,13 +275,13 @@ Graphics::InfoException::InfoException(int line, const char* file, std::vector<s
 	:
 	Exception(line, file)
 {
-	// po³¹cz wszystkie wiadomoœci informacyjne z nowymi liniami w jeden ci¹g
+	// poÅ‚Ä…cz wszystkie wiadomoÅ›ci informacyjne z nowymi liniami w jeden ciÄ…g
 	for (const auto& m : infoMsgs)
 	{
 		info += m;
 		info.push_back('\n');
 	}
-	// usuñ ostatni¹ now¹ liniê, jeœli istnieje
+	// usuÅ„ ostatniÄ… nowÄ… liniÄ™, jeÅ›li istnieje
 	if (!info.empty())
 	{
 		info.pop_back();
