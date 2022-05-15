@@ -2,10 +2,10 @@
 #include <sstream>
 
 int CALLBACK WinMain( 
-	HINSTANCE hInstance, //wskaŸniki do struktur, które przechowuj¹ informacje o naszym programie
-	HINSTANCE hPrevInstance, //w którym s¹ ³adowane do pamiêci. Drugi zawsze bêdzie NULL. 
-	LPSTR lpCmdLine, //Linia poleceñ jako pojedynczy ci¹g znaków
-	int nCmdShow) //Info w jaki sposób okno powinno byæ pokazane
+	HINSTANCE hInstance, //wskaÅºniki do struktur, ktÃ³re przechowujÄ… informacje o naszym programie
+	HINSTANCE hPrevInstance, //w ktÃ³rym sÄ… Å‚adowane do pamiÄ™ci. Drugi zawsze bÄ™dzie NULL. 
+	LPSTR lpCmdLine, //Linia poleceÅ„ jako pojedynczy ciÄ…g znakÃ³w
+	int nCmdShow) //Info w jaki sposÃ³b okno powinno byÄ‡ pokazane
 {
 	try {
 		return App{}.Start();

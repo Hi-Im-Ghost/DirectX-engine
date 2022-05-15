@@ -17,7 +17,7 @@ public:
 	//Metoda do pobierania kolejnych wiadomosci 
 	std::vector<std::string> GetMessages() const;
 private:
-	//Indeks ostatniej wiadomoúci w kolejce
+	//Indeks ostatniej wiadomo≈õci w kolejce
 	unsigned long long next = 0u;
 	//Interfejs z informacjami o DXGI
 	Microsoft::WRL::ComPtr<IDXGIInfoQueue> dDxgiInfoQueue;

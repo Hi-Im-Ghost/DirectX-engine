@@ -11,17 +11,17 @@ Window::WindowClass::WindowClass() noexcept:
 	WNDCLASSEX winclass = { 0 }; //struktura konfiguracyjna 
 	winclass.cbSize = sizeof(winclass); //ustawienie rozmiaru struktury 
 	winclass.style = CS_OWNDC; //ustawienie stylu
-	winclass.lpfnWndProc = HandleMsgSetup; //wskaŸnik do procedury okna
-	winclass.cbClsExtra = 0; //iloœæ dodatkowych bajtów w strukturze po stronie API
-	winclass.cbWndExtra = 0; //iloœæ dodatkowych bajtów dla ka¿dego okna, które zosta³o stworzone przez t¹ klase
-	winclass.hInstance = GetInstance(); //dojœcie do instancji aplikacji
+	winclass.lpfnWndProc = HandleMsgSetup; //wskaÅºnik do procedury okna
+	winclass.cbClsExtra = 0; //iloÅ›Ä‡ dodatkowych bajtÃ³w w strukturze po stronie API
+	winclass.cbWndExtra = 0; //iloÅ›Ä‡ dodatkowych bajtÃ³w dla kaÅ¼dego okna, ktÃ³re zostaÅ‚o stworzone przez tÄ… klase
+	winclass.hInstance = GetInstance(); //dojÅ›cie do instancji aplikacji
 	winclass.hIcon = static_cast<HICON>(LoadImage(GetInstance(), MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 32, 32, 0)); //ikona 
 	winclass.hCursor = nullptr; //kursor
-	winclass.hbrBackground = nullptr; //t³o
+	winclass.hbrBackground = nullptr; //tÅ‚o
 	winclass.lpszMenuName = nullptr; //nazwa menu
 	winclass.lpszClassName = GetName(); //nazwa klasy
 	winclass.hIconSm = static_cast<HICON>(LoadImage(GetInstance(), MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 32, 32, 0)); ; //ikona
-	RegisterClassEx(&winclass); //rejestracja klasy. Ex oznacza nowsz¹ wersje
+	RegisterClassEx(&winclass); //rejestracja klasy. Ex oznacza nowszÄ… wersje
 }
 
 Window::WindowClass::~WindowClass()
@@ -51,7 +51,7 @@ Window::Window(int width, int height, const char* name):
 	wr.right = width + wr.left;
 	wr.top = 100;
 	wr.bottom = height + wr.top;
-	//Dostosowanie by rozmiar okna by³ dla ca³oœci po¿¹danego regionu klienta
+	//Dostosowanie by rozmiar okna byÅ‚ dla caÅ‚oÅ›ci poÅ¼Ä…danego regionu klienta
 	if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)==0)
 	{
 		throw CHWND_LAST_EXCEPT();
@@ -62,10 +62,10 @@ Window::Window(int width, int height, const char* name):
 		name, //nazwa okna
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		wr.right - wr.left, //po³o¿enie okna
-		wr.bottom - wr.top, //rozdzielczoœæ
-		nullptr, //wskaŸnik na rodzica okna
-		nullptr, //wskaŸnik do menu
+		wr.right - wr.left, //poÅ‚oÅ¼enie okna
+		wr.bottom - wr.top, //rozdzielczoÅ›Ä‡
+		nullptr, //wskaÅºnik na rodzica okna
+		nullptr, //wskaÅºnik do menu
 		WindowClass::GetInstance(), //instancja
 		this //niestandardowy
 	);
@@ -74,7 +74,7 @@ Window::Window(int width, int height, const char* name):
 	{
 		throw CHWND_LAST_EXCEPT();
 	}
-	//Wyœwietl okno
+	//WyÅ›wietl okno
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 	//Tworzenie obrazu grafiki d3d
 	gD3g = std::make_unique<Graphics>(hWnd);
@@ -98,13 +98,13 @@ void Window::SetTitle(const std::string& title)
 std::optional<int> Window::ProcessMessages()
 {
 	MSG msg;
-	// Gdy kolejka zawiera powiadomienia to je usuñ i wyœlij
+	// Gdy kolejka zawiera powiadomienia to je usuÅ„ i wyÅ›lij
 	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 	{
 		// Sprawdzanie czy wyszlismy 
 		if (msg.message == WM_QUIT)
 		{
-			// opcjonalnie zwróc sygnalizacje do wyjscia
+			// opcjonalnie zwrÃ³c sygnalizacje do wyjscia
 			return (int)msg.wParam;
 		}
 
@@ -119,7 +119,7 @@ std::optional<int> Window::ProcessMessages()
 
 Graphics& Window::D3g()
 {
-	//Wyj¹tek gdy spróbujemy uzyskaæ grafikê ale wskaŸnik nie zosta³ jeszcze ustawiony
+	//WyjÄ…tek gdy sprÃ³bujemy uzyskaÄ‡ grafikÄ™ ale wskaÅºnik nie zostaÅ‚ jeszcze ustawiony
 	if (!gD3g)
 	{
 		throw CHWND_NOGFX_EXCEPT();
@@ -132,15 +132,15 @@ LRESULT WINAPI Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 	// Sprawdzenie czy typ wiadomosci jest rowny tworzonemu bez uzytkownika
 	if (msg == WM_NCCREATE)
 	{
-		// wyodrêbnij wskaŸnik do klasy okna z danych tworzenia
+		// wyodrÄ™bnij wskaÅºnik do klasy okna z danych tworzenia
 		const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(lParam);
 		// statyczne rzutowanie tworzenia okna 
 		Window* const pWnd = static_cast<Window*>(pCreate->lpCreateParams);
-		// ustaw dane u¿ytkownika zarz¹dzane przez WinAPI do przechowywania wskaŸnika do klasy okna
+		// ustaw dane uÅ¼ytkownika zarzÄ…dzane przez WinAPI do przechowywania wskaÅºnika do klasy okna
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWnd));
-		// ustaw procedurê obs³ugi wiadomoœci na normaln¹ (nie-instalacyjn¹) procedurê obs³ugi po zakoñczeniu instalacji
+		// ustaw procedurÄ™ obsÅ‚ugi wiadomoÅ›ci na normalnÄ… (nie-instalacyjnÄ…) procedurÄ™ obsÅ‚ugi po zakoÅ„czeniu instalacji
 		SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&Window::HandleMsgThunk));
-		// przeœlij wiadomoœæ do programu obs³ugi klasy okna
+		// przeÅ›lij wiadomoÅ›Ä‡ do programu obsÅ‚ugi klasy okna
 		return pWnd->HandleMsg(hWnd, msg, wParam, lParam);
 	}
 	//Jesli nie to zrob domyslnie
@@ -151,7 +151,7 @@ LRESULT WINAPI Window::HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 {
 	// pobierz wskaznik do klasy okna
 	Window* const pWnd = reinterpret_cast<Window*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-	// przeœlij wiadomoœæ do programu obs³ugi klasy okna
+	// przeÅ›lij wiadomoÅ›Ä‡ do programu obsÅ‚ugi klasy okna
 	return pWnd->HandleMsg(hWnd, msg, wParam, lParam);
 }
 
@@ -165,7 +165,7 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		PostQuitMessage(0);
 		return 0;
 
-	//wyczyœæ stan klawiszy, gdy okno traci fokus, aby zapobiec "zablokowaniu" danych wejœciowych
+	//wyczyÅ›Ä‡ stan klawiszy, gdy okno traci fokus, aby zapobiec "zablokowaniu" danych wejÅ›ciowych
 	case WM_KILLFOCUS:
 		kbd.ClearState();
 		break;
@@ -252,23 +252,23 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-// Wyj¹tki okna
+// WyjÄ…tki okna
 std::string Window::Exceptions::TranslateErrorCode(HRESULT hr) noexcept
 {
 	char* pMsgBuf = nullptr;
-	// Przydziel pamiêc dla ³añcucha b³êdów i wska¿ na niego nasz wskaŸnik
+	// Przydziel pamiÄ™c dla Å‚aÅ„cucha bÅ‚Ä™dÃ³w i wskaÅ¼ na niego nasz wskaÅºnik
 	const DWORD nMsgLen = FormatMessage(
 		FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 		nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 		reinterpret_cast<LPSTR>(&pMsgBuf), 0, nullptr
 	);
-	// Zwrócona d³ugoœæ ci¹gu 0 oznacza awariê
+	// ZwrÃ³cona dÅ‚ugoÅ›Ä‡ ciÄ…gu 0 oznacza awariÄ™
 	if (nMsgLen == 0)
 	{
 		return "Unidentified error code";
 	}
-	// skopiuj ci¹g b³êdu z bufora przydzielonego do systemu Windows do std::string
+	// skopiuj ciÄ…g bÅ‚Ä™du z bufora przydzielonego do systemu Windows do std::string
 	std::string errorString = pMsgBuf;
 	// zwolnij bufor systemu
 	LocalFree(pMsgBuf);

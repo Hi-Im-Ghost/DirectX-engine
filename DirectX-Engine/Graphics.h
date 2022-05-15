@@ -10,16 +10,17 @@ class Graphics
 {
 private:
 	
-#ifndef NDEBUG //Zamiesci nazwe menada¿era ale tylko w tybie debugowania
+#ifndef NDEBUG //Zamiesci nazwe menadaÅ¼era ale tylko w tybie debugowania
 	DxgInfo infoManager;
 #endif
-	//WskaŸniki com do poszczególnych opcji dla d3d11
-	//U¿ywany do przydzielania opcji
+	//WskaÅºniki com do poszczegÃ³lnych opcji dla d3d11
+	//UÅ¼ywany do przydzielania opcji
 	Microsoft::WRL::ComPtr<ID3D11Device> gDevice;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> gSwap;
-	//U¿ywany do konfigurowania potoku podczas wydawania poleceñ renderowania
+	//UÅ¼ywany do konfigurowania potoku podczas wydawania poleceÅ„ renderowania
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> gContext;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> gTarget;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> gDSV;
 public:
 	Graphics(HWND hWnd);
 	Graphics(const Graphics&) = delete;
@@ -28,17 +29,17 @@ public:
 	//Bufor tylni 
 	void EndFrame();
 	void ClearBuffer(float red, float green, float blue) noexcept;
-	//Metoda do rysowania trójk¹tów
-	void DrawTriangle();
+	//Metoda do rysowania trÃ³jkÄ…tÃ³w
+	void DrawCube(float x, float y, float z, float rotationX, float rotationY, float rotationZ);
 
 
-	//Klasy wyj¹tków graficznych
-	//Wyj¹tek grafiki bazowej
+	//Klasy wyjÄ…tkÃ³w graficznych
+	//WyjÄ…tek grafiki bazowej
 	class Exceptions : public Exception
 	{
 		using Exception::Exception;
 	};
-	//Wyj¹tek wyniku
+	//WyjÄ…tek wyniku
 	class HrException : public Exception
 	{
 	public:
@@ -46,9 +47,9 @@ public:
 		const char* what() const noexcept override;
 		const char* GetType() const noexcept override;
 		HRESULT GetErrorCode() const noexcept;
-		//Uzyskaj ci¹g b³êdu
+		//Uzyskaj ciÄ…g bÅ‚Ä™du
 		std::string GetErrorString() const noexcept;
-		//Uzyskaj opis b³êdu
+		//Uzyskaj opis bÅ‚Ä™du
 		std::string GetErrorDescription() const noexcept;
 		//Uzyskaj ciag dodatkowych informacji bledu
 		std::string GetErrorInfo() const noexcept;

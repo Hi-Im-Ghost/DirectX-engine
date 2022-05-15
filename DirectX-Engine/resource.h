@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Plik do³¹czany wygenerowany przez œrodowisko Microsoft Visual C++.
-// U¿ywany przez: DirectX-Engine.rc
+// Plik doÅ‚Ä…czany wygenerowany przez Å›rodowisko Microsoft Visual C++.
+// UÅ¼ywany przez: DirectX-Engine.rc
 //
 #define IDI_ICON1                       101
 

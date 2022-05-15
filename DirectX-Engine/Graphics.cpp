@@ -2,8 +2,10 @@
 #include "dxerr.h"
 #include <sstream>
 #include <d3dcompiler.h>
+#include <DirectXMath.h>
 
 namespace wrl = Microsoft::WRL;
+namespace dx = DirectX;
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
 
@@ -23,6 +25,7 @@ namespace wrl = Microsoft::WRL;
 #define GFX_DEVICE_REMOVED_EXCEPT(hr) Graphics::DeviceRemovedException( __LINE__,__FILE__,(hr) )
 #define GFX_THROW_INFO_ONLY(call) (call)
 #endif
+
 
 Graphics::Graphics(HWND hWnd)
 {
@@ -72,6 +75,41 @@ Graphics::Graphics(HWND hWnd)
 	// Przeciazenie operatora za pomoca wskaznika do komunikacji
 	GFX_THROW_INFO(gSwap->GetBuffer(0, __uuidof(ID3D11Resource), &gBackBuffer));
 	GFX_THROW_INFO(gDevice->CreateRenderTargetView(gBackBuffer.Get(), nullptr, &gTarget));
+
+	// Utwórz stan Z-Buffera
+	D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+	dsDesc.DepthEnable = TRUE;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	wrl::ComPtr<ID3D11DepthStencilState> pDSState;
+	GFX_THROW_INFO(gDevice->CreateDepthStencilState(&dsDesc, &pDSState));
+
+	// Przypisz stan
+	gContext->OMSetDepthStencilState(pDSState.Get(), 1u);
+
+	// Utwórz teksturę szablonu głębokości (stencil buffer)
+	wrl::ComPtr<ID3D11Texture2D> pDepthStencil;
+	D3D11_TEXTURE2D_DESC descDepth = {};
+	descDepth.Width = 800u;
+	descDepth.Height = 600u;
+	descDepth.MipLevels = 1u;
+	descDepth.ArraySize = 1u;
+	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
+	descDepth.SampleDesc.Count = 1u;
+	descDepth.SampleDesc.Quality = 0u;
+	descDepth.Usage = D3D11_USAGE_DEFAULT;
+	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	GFX_THROW_INFO(gDevice->CreateTexture2D(&descDepth, nullptr, &pDepthStencil));
+
+	// Tworzenie widoku z utworzonej tekstury
+	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
+	descDSV.Format = DXGI_FORMAT_D32_FLOAT;
+	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	descDSV.Texture2D.MipSlice = 0u;
+	GFX_THROW_INFO(gDevice->CreateDepthStencilView(pDepthStencil.Get(), &descDSV, &gDSV));
+
+	// Przypisz widok do OM
+	gContext->OMSetRenderTargets(1u, gTarget.GetAddressOf(), gDSV.Get());
 }
 
 void Graphics::EndFrame()
@@ -98,24 +136,34 @@ void Graphics::ClearBuffer(float red, float green, float blue) noexcept
 {
 	const float color[] = { red,green,blue,1.0f };
 	gContext->ClearRenderTargetView(gTarget.Get(), color);
+	gContext->ClearDepthStencilView(gDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
 
-void Graphics::DrawTriangle()
+void Graphics::DrawCube(float x, float y, float z, float rotX, float rotY, float rotZ)
 {
 	namespace wrl = Microsoft::WRL;
 	HRESULT hr;
 	//Struktura wierzchołków
 	struct Vertex
 	{
-		float x;
-		float y;
+		struct
+		{
+			float x;
+			float y;
+			float z;
+		} pos;
 	};
 
 	const Vertex vertices[] =
 	{
-		{0.0f,0.5f},
-		{0.5f,-0.5f},
-		{-0.5f,-0.5f},
+		{-1.0f, -1.0f, -1.0f},
+		{ 1.0f, -1.0f, -1.0f},
+		{-1.0f,  1.0f, -1.0f},
+		{ 1.0f,  1.0f, -1.0f},
+		{-1.0f, -1.0f,	1.0f},
+		{ 1.0f, -1.0f,  1.0f},
+		{-1.0f,  1.0f,  1.0f},
+		{ 1.0f,  1.0f,  1.0f},
 	};
 
 	wrl::ComPtr<ID3D11Buffer> gVertexBuffer;
@@ -133,13 +181,105 @@ void Graphics::DrawTriangle()
 	//Tworzenie bufora
 	GFX_THROW_INFO(gDevice->CreateBuffer(&bufferDesc,&subresData,&gVertexBuffer));
 
-
 	//Kroki
 	const UINT stride = sizeof(Vertex);
 	//Przesuniecia
 	const UINT offset = 0u;
 	//Ustawienie buforów dla wierzchołków
 	gContext->IASetVertexBuffers(0u,1u,gVertexBuffer.GetAddressOf(), &stride, &offset);
+
+
+	// Bufor indexów
+	const unsigned short indices[] =
+	{
+		0,2,1,	2,3,1,
+		1,3,5,	3,7,5,
+		2,6,3,	3,6,7,
+		4,5,7,	4,7,6,
+		0,4,2,	2,4,6,
+		0,1,4,	1,5,4
+	};
+	wrl::ComPtr<ID3D11Buffer> pIndexBuffer;
+	D3D11_BUFFER_DESC indexBufferDesc = {};
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.CPUAccessFlags = 0u;
+	indexBufferDesc.MiscFlags = 0u;
+	indexBufferDesc.ByteWidth = sizeof(indices);
+	indexBufferDesc.StructureByteStride = sizeof(unsigned short);
+	D3D11_SUBRESOURCE_DATA isd = {};
+	isd.pSysMem = indices;
+	GFX_THROW_INFO(gDevice->CreateBuffer(&indexBufferDesc, &isd, &pIndexBuffer));
+
+	gContext->IASetIndexBuffer(pIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
+
+
+	//Tworzenie stałego buffera dla tablicy przekształceń
+	struct ConstantBuffer
+	{
+		dx::XMMATRIX transform;
+	};
+
+	const ConstantBuffer cb =
+	{
+		{
+			dx::XMMatrixTranspose(
+				dx::XMMatrixRotationRollPitchYaw(rotX, rotY, rotZ) *
+				dx::XMMatrixTranslation(x, y, z) *
+				dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 10.0f)
+			)
+		}
+	};
+	wrl::ComPtr<ID3D11Buffer> pConstantBuffer;
+	D3D11_BUFFER_DESC cbd;
+	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd.Usage = D3D11_USAGE_DYNAMIC;
+	cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbd.MiscFlags = 0u;
+	cbd.ByteWidth = sizeof(cb);
+	cbd.StructureByteStride = 0u;
+	D3D11_SUBRESOURCE_DATA csd = {};
+	csd.pSysMem = &cb;
+	GFX_THROW_INFO(gDevice->CreateBuffer(&cbd, &csd, &pConstantBuffer));
+
+	// Powiąż stały buffer z vertex shaderem
+	gContext->VSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
+
+
+	struct ConstantBuffer2
+	{
+		struct
+		{
+			float r;
+			float g;
+			float b;
+			float a;
+		} face_colors[6];
+	};
+	const ConstantBuffer2 cb2 =
+	{
+		{
+			{1.0f, 0.0f, 1.0f},
+			{1.0f, 0.0f, 0.0f},
+			{0.0f, 1.0f, 0.0f},
+			{0.0f, 0.0f, 1.0f},
+			{1.0f, 1.0f, 0.0f},
+			{0.0f, 1.0f, 1.0f},
+		}
+	};
+	wrl::ComPtr<ID3D11Buffer> pConstantBuffer2;
+	D3D11_BUFFER_DESC cbd2;
+	cbd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd2.Usage = D3D11_USAGE_DEFAULT;
+	cbd2.CPUAccessFlags = 0u;
+	cbd2.MiscFlags = 0u;
+	cbd2.ByteWidth = sizeof(cb2);
+	cbd2.StructureByteStride = 0u;
+	D3D11_SUBRESOURCE_DATA csd2 = {};
+	csd2.pSysMem = &cb2;
+	GFX_THROW_INFO(gDevice->CreateBuffer(&cbd2, &csd2, &pConstantBuffer2));
+
+	gContext->PSSetConstantBuffers(0u, 1u, pConstantBuffer2.GetAddressOf());
 
 
 	//Tworzenie pixel shadera
@@ -167,7 +307,7 @@ void Graphics::DrawTriangle()
 	wrl::ComPtr<ID3D11InputLayout> gInputLayout;
 	const D3D11_INPUT_ELEMENT_DESC inputElement[] =
 	{
-		{ "Position",0,DXGI_FORMAT_R32G32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 }
 	};
 	GFX_THROW_INFO(gDevice->CreateInputLayout(
 		inputElement, (UINT)std::size(inputElement),
@@ -178,11 +318,6 @@ void Graphics::DrawTriangle()
 
 	// Powiązanie vertex shadera
 	gContext->IASetInputLayout(gInputLayout.Get());
-
-
-	// Powiązanie renderowania
-	gContext->OMSetRenderTargets(1u, gTarget.GetAddressOf(), nullptr);
-
 
 	// Ustaw topologię pierwotną na listę trójkątów
 	gContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -199,7 +334,7 @@ void Graphics::DrawTriangle()
 	gContext->RSSetViewports(1u, &viewPort);
 
 	//Rysuj
-	GFX_THROW_INFO_ONLY(gContext->Draw((UINT)std::size(vertices), 0u));
+	GFX_THROW_INFO_ONLY(gContext->DrawIndexed((UINT)std::size(indices), 0u, 0u));
 }
 
 // Wyjątki grafiki d3d

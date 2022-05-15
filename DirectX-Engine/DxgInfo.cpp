@@ -48,7 +48,7 @@ std::vector<std::string> DxgInfo::GetMessages() const
 	{
 		HRESULT hr;
 		SIZE_T messageLength;
-		// pobieranie rozmiaru wiadomoœci w bajtach
+		// pobieranie rozmiaru wiadomoÅ›ci w bajtach
 		GFX_THROW_NOINFO(dDxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, nullptr, &messageLength));
 		// allocate memory for message
 		auto bytes = std::make_unique<byte[]>(messageLength);

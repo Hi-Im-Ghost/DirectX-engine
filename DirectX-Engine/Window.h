@@ -10,21 +10,21 @@
 #include "Graphics.h"
 
 
-//Klasa reprezentuj¹ca okno
+//Klasa reprezentujÄ…ca okno
 class Window
 {
 private:
 	int width;
 	int height;
 	HWND hWnd;
-	//Unikalny skaŸnik dla grafiki d3d
+	//Unikalny skaÅºnik dla grafiki d3d
 	std::unique_ptr<Graphics> gD3g;
 
 	//Metoda do konfigurowania wiadomosci
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	//Metoda do obslugi wiadomosci
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
-	//Obs³uga wiadomoœci
+	//ObsÅ‚uga wiadomoÅ›ci
 	LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 
 	class WindowClass
@@ -46,7 +46,7 @@ private:
 	};
 
 public:
-	//Klasa bazowa wyj¹tków
+	//Klasa bazowa wyjÄ…tkÃ³w
 	class Exceptions : public Exception
 	{
 		using Exception::Exception;
@@ -79,14 +79,14 @@ public:
 	//Metoda do zmiany tytulu okna
 	void SetTitle(const std::string& title);
 	static std::optional<int> ProcessMessages();
-	//Uzyskiwanie dostêpu do osadzonej grafiki
+	//Uzyskiwanie dostÄ™pu do osadzonej grafiki
 	Graphics& D3g();
 
 	Keyboard kbd;
 	Mouse mouse;
 };
 
-// Makro dla wyjatków
+// Makro dla wyjatkÃ³w
 #define CHWND_EXCEPT( hr ) Window::HrException( __LINE__,__FILE__,(hr) )
 #define CHWND_LAST_EXCEPT() Window::HrException( __LINE__,__FILE__,GetLastError() )
 #define CHWND_NOGFX_EXCEPT() Window::NoGfxException( __LINE__,__FILE__ )

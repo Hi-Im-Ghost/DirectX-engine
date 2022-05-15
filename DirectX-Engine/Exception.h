@@ -1,7 +1,7 @@
 #pragma once
 #include <exception>
 #include <string>
-//Klasa wyj¹tków
+//Klasa wyjÄ…tkÃ³w
 class Exception : public std::exception
 {
 public:
@@ -21,7 +21,7 @@ private:
 	//Plik z ktorego pochodzi wyjatek
 	std::string file;
 protected:
-	//Buffor pozwoli przechowywaæ wyj¹tek po zakoñczeniu programu
+	//Buffor pozwoli przechowywaÄ‡ wyjÄ…tek po zakoÅ„czeniu programu
 	mutable std::string buffer;
 
 };

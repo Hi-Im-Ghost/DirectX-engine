@@ -2,7 +2,7 @@
 #include <queue>
 #include <bitset>
 
-//Klasa obs³ugi klawiatury
+//Klasa obsÅ‚ugi klawiatury
 class Keyboard
 {
 	friend class Window;
@@ -55,9 +55,9 @@ public:
 	bool KeyIsPressed(unsigned char keycode) const noexcept;
 	// Odczyt klawisza
 	Event ReadKey() noexcept;
-	// Sprawdzenie czy klawisz jest w kolejce zdarzeñ
+	// Sprawdzenie czy klawisz jest w kolejce zdarzeÅ„
 	bool KeyIsEmpty() const noexcept;
-	// Opró¿nianie kolejki zdarzeñ klawiszy
+	// OprÃ³Å¼nianie kolejki zdarzeÅ„ klawiszy
 	void FlushKey() noexcept;
 	// Akcje Char uzywane do wprowadzania strumienia znakow 
 	char ReadChar() noexcept;
@@ -69,7 +69,7 @@ public:
 	void DisableAutorepeat() noexcept;
 	bool AutorepeatIsEnabled() const noexcept;
 private:
-	//Wywo³ywane gdy otrzymamy okreœlone komunikaty systemu Windows
+	//WywoÅ‚ywane gdy otrzymamy okreÅ›lone komunikaty systemu Windows
 	void OnKeyPressed(unsigned char keycode) noexcept;
 	void OnKeyReleased(unsigned char keycode) noexcept;
 	void OnChar(char character) noexcept;
@@ -77,15 +77,15 @@ private:
 	template<typename T>
 	//Bufor przecinania usuwa elementy z kolejki jesli ktores przekrocza rozmiar zadeklarowany
 	static void TrimBuffer(std::queue<T>&buffer) noexcept;
-	//Maksymalna liczba kodów klawiszy
+	//Maksymalna liczba kodÃ³w klawiszy
 	static constexpr unsigned int nKeys = 256u;
 	static constexpr unsigned int bufferSize = 16u;
 	bool autorepeatEnabled = false;
-	//Pakuje 256 bitów w pojedyncze bity i pozwala na dostêp do nich za pomoc¹ indeksu
+	//Pakuje 256 bitÃ³w w pojedyncze bity i pozwala na dostÄ™p do nich za pomocÄ… indeksu
 	std::bitset<nKeys> keystates;
 	//Kolejka dla klawiszy
 	std::queue<Event> keybuffer;
-	//Kolejka dla znaków
+	//Kolejka dla znakÃ³w
 	std::queue<char> charbuffer;
 };
 
