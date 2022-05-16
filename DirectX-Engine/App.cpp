@@ -40,5 +40,6 @@ void App::DoFrame()
 		45.0f,
 		0.0f
 	);
+	win.D3g().DoFrame();
 	win.D3g().EndFrame();
 }

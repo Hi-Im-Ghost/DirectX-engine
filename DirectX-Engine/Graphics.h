@@ -26,7 +26,8 @@ public:
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics() = default;
-	//Bufor tylni 
+	// Bufor tylni
+	void DoFrame();
 	void EndFrame();
 	void ClearBuffer(float red, float green, float blue) noexcept;
 	//Metoda do rysowania trójkątów

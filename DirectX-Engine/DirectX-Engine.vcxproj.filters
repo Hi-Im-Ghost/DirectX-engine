@@ -16,6 +16,12 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{2eb70577-a004-4c5d-acff-a84b78b16be1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\ImGui">
+      <UniqueIdentifier>{e356ef91-f9d2-430f-bfaa-d65a40b32a9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\ImGui">
+      <UniqueIdentifier>{5c64c0eb-138f-4f67-86cf-50cd372b58a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -54,6 +60,24 @@
     <ClCompile Include="DxgInfo.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>Pliki źródłowe\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>Pliki źródłowe\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
+      <Filter>Pliki źródłowe\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_win32.cpp">
+      <Filter>Pliki źródłowe\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_tables.cpp">
+      <Filter>Pliki źródłowe\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <Filter>Pliki źródłowe\ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
@@ -91,6 +115,30 @@
     </ClInclude>
     <ClInclude Include="DxgInfo.h">
       <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>Pliki nagłówkowe\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>Pliki nagłówkowe\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_dx11.h">
+      <Filter>Pliki nagłówkowe\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_win32.h">
+      <Filter>Pliki nagłówkowe\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>Pliki nagłówkowe\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_rectpack.h">
+      <Filter>Pliki nagłówkowe\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_textedit.h">
+      <Filter>Pliki nagłówkowe\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_truetype.h">
+      <Filter>Pliki nagłówkowe\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

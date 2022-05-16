@@ -127,6 +127,8 @@ Graphics& Window::D3g()
 	return *gD3g;
 }
 
+
+
 LRESULT WINAPI Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
 	// Sprawdzenie czy typ wiadomosci jest rowny tworzonemu bez uzytkownika
@@ -155,9 +157,14 @@ LRESULT WINAPI Window::HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 	return pWnd->HandleMsg(hWnd, msg, wParam, lParam);
 }
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 //Procedura dla okna
 LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
+	// Przekierowanie inputu do ImGUI
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+		return true;
+
 	switch (msg)
 	{
 	//Akcja po nacisnieciu X okna
