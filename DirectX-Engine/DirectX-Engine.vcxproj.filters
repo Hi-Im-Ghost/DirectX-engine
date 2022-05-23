@@ -22,6 +22,21 @@
     <Filter Include="Pliki źródłowe\ImGui">
       <UniqueIdentifier>{5c64c0eb-138f-4f67-86cf-50cd372b58a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Macros">
+      <UniqueIdentifier>{0a082a55-254f-417c-87a0-2e0ac6a606c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Bindable">
+      <UniqueIdentifier>{fba4e048-b23f-4360-a133-d31267fb8919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Bindable">
+      <UniqueIdentifier>{cbf76572-d1a4-4dc3-87fb-a9f546ec6867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Drawable">
+      <UniqueIdentifier>{38225d6f-626e-4190-b5b0-340d9c7d9383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Drawable">
+      <UniqueIdentifier>{93975da5-1591-4678-bbdc-b1f59b634b6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -77,6 +92,36 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>Pliki źródłowe\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable.cpp">
+      <Filter>Pliki źródłowe\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Pliki źródłowe\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>Pliki źródłowe\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>Pliki źródłowe\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLayout.cpp">
+      <Filter>Pliki źródłowe\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShader.cpp">
+      <Filter>Pliki źródłowe\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Topology.cpp">
+      <Filter>Pliki źródłowe\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformCbuf.cpp">
+      <Filter>Pliki źródłowe\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Pliki źródłowe\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Pliki źródłowe\Bindable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,10 +186,46 @@
       <Filter>Pliki nagłówkowe\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsThrowMacros.h">
-      <Filter>Pliki nagłówkowe</Filter>
+      <Filter>Pliki nagłówkowe\Macros</Filter>
     </ClInclude>
-    <ClInclude Include="WindowsThrowMacros.h">
-      <Filter>Pliki nagłówkowe</Filter>
+    <ClInclude Include="WindowThrowMacros.h">
+      <Filter>Pliki nagłówkowe\Macros</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable.h">
+      <Filter>Pliki nagłówkowe\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="BindableBase.h">
+      <Filter>Pliki nagłówkowe\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Pliki nagłówkowe\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable.h">
+      <Filter>Pliki nagłówkowe\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffers.h">
+      <Filter>Pliki nagłówkowe\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>Pliki nagłówkowe\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLayout.h">
+      <Filter>Pliki nagłówkowe\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Pliki nagłówkowe\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Topology.h">
+      <Filter>Pliki nagłówkowe\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformCbuf.h">
+      <Filter>Pliki nagłówkowe\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Pliki nagłówkowe\Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Pliki nagłówkowe\Bindable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -86,7 +86,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);IS_DEBUG=true</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -104,7 +104,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;{PreprocessorDefinitions};NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;{PreprocessorDefinitions};NDEBUG;IS_DEBUG=false</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -123,7 +123,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);IS_DEBUG=true</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -141,7 +141,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_MBCS;{PreprocessorDefinitions};NDEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;{PreprocessorDefinitions};NDEBUG;IS_DEBUG=false</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -173,8 +173,18 @@
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
+    <ClCompile Include="Bindable.cpp" />
+    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="InputLayout.cpp" />
+    <ClCompile Include="PixelShader.cpp" />
+    <ClCompile Include="Topology.cpp" />
+    <ClCompile Include="TransformCbuf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -195,10 +205,22 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Bindable.h" />
+    <ClInclude Include="BindableBase.h" />
+    <ClInclude Include="Box.h" />
+    <ClInclude Include="Drawable.h" />
+    <ClInclude Include="ConstantBuffers.h" />
+    <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="InputLayout.h" />
+    <ClInclude Include="TransformCbuf.h" />
+    <ClInclude Include="Topology.h" />
+    <ClInclude Include="PixelShader.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />
-    <ClInclude Include="WindowsThrowMacros.h" />
+    <ClInclude Include="WindowThrowMacros.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX-Engine.rc" />
