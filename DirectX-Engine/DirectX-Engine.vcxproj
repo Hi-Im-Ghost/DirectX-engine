@@ -189,6 +189,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="ChiliWin.h" />
+    <ClInclude Include="DrawableBase.h" />
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DxgInfo.h" />
     <ClInclude Include="Exception.h" />

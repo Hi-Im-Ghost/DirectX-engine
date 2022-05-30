@@ -227,6 +227,9 @@
     <ClInclude Include="VertexShader.h">
       <Filter>Pliki nagłówkowe\Bindable</Filter>
     </ClInclude>
+    <ClInclude Include="DrawableBase.h">
+      <Filter>Pliki nagłówkowe\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX-Engine.rc">

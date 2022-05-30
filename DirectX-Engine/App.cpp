@@ -9,7 +9,7 @@ App::App() : win(800, 600, "DenginX")
 	std::uniform_real_distribution<float> ddist(0.0f, 3.1415f * 2.0f);
 	std::uniform_real_distribution<float> odist(0.0f, 3.1415f * 0.3f);
 	std::uniform_real_distribution<float> rdist(6.0f, 20.0f);
-	for (auto i = 0; i < 8; i++)
+	for (auto i = 0; i < 80; i++)
 	{
 		boxes.push_back(std::make_unique<Box>(
 			win.D3g(), rng, adist,
