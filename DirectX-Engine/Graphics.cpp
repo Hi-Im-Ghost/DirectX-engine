@@ -5,8 +5,6 @@
 #include <DirectXMath.h>
 #include "GraphicsThrowMacros.h"
 
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_win32.h"
 #include "ImGui/imgui_impl_dx11.h"
 
 namespace wrl = Microsoft::WRL;
@@ -113,29 +111,7 @@ Graphics::Graphics(HWND hWnd)
 
 
 	/* ImGUI */
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGui_ImplWin32_Init(hWnd);
 	ImGui_ImplDX11_Init(gDevice.Get(), gContext.Get());
-	ImGui::StyleColorsDark();
-}
-
-void Graphics::DoFrame()
-{
-	// Zacznij renderować ImGUI
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
-	// Utwórz okno testowe ImGUI
-	ImGui::Begin("Test");
-	ImGui::End();
-
-	// Zbierz do kupy dane do renderowania ImGUI
-	ImGui::Render();
-
-	// Renderuj ImGUI
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
 void Graphics::EndFrame()

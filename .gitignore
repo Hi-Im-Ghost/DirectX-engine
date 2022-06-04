@@ -7,6 +7,8 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+/DirectX-Engine/imgui.ini
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

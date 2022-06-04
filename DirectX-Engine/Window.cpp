@@ -2,6 +2,7 @@
 #include <sstream>
 #include "resource.h"
 #include "WindowThrowMacros.h"
+#include "ImGui/imgui_impl_win32.h"
 
 //
 Window::WindowClass Window::WindowClass::wndClass;
@@ -77,12 +78,17 @@ Window::Window(int width, int height, const char* name):
 	}
 	//Wyświetl okno
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
+
+	// Inicjalizacja ImGui na Win32
+	ImGui_ImplWin32_Init(hWnd);
+
 	//Tworzenie obrazu grafiki d3d
 	gD3g = std::make_unique<Graphics>(hWnd);
 }
 
 Window::~Window()
 {
+	ImGui_ImplWin32_Shutdown();
 	DestroyWindow(hWnd);
 }
 

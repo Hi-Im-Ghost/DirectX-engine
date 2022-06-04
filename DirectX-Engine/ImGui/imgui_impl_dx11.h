@@ -12,9 +12,8 @@
 
 #pragma once
 #include "imgui.h"      // IMGUI_IMPL_API
-
-struct ID3D11Device;
-struct ID3D11DeviceContext;
+#include "../ChiliWin.h"
+#include "../Graphics.h"
 
 IMGUI_IMPL_API bool     ImGui_ImplDX11_Init(ID3D11Device* device, ID3D11DeviceContext* device_context);
 IMGUI_IMPL_API void     ImGui_ImplDX11_Shutdown();

@@ -10,6 +10,10 @@
 #include "Surface.h"
 #include "TextureManager.h"
 
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_win32.h"
+#include "ImGui/imgui_impl_dx11.h"
+
 TextureManager gdipm;
 
 App::App() : win(800, 600, "DenginX")
@@ -123,5 +127,20 @@ void App::DoFrame()
 		d->Update(win.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 		d->Draw(win.D3g());
 	}
+
+	// imgui
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	static bool show_demo_window = true;
+	if (show_demo_window)
+	{
+		ImGui::ShowDemoWindow(&show_demo_window);
+	}
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+
 	win.D3g().EndFrame();
 }

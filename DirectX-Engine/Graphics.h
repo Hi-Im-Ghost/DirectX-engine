@@ -20,7 +20,6 @@ public:
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics() = default;
 	// Bufor tylni
-	void DoFrame();
 	void EndFrame();
 	void ClearBuffer(float red, float green, float blue) noexcept;
 	void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
