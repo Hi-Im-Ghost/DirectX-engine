@@ -2,6 +2,7 @@
 #include <vector>
 #include <DirectXMath.h>
 
+//Klasa do tworzenia modeli z wierzchołków i indeksów
 template<class T>
 class ObjectTranglesList
 {

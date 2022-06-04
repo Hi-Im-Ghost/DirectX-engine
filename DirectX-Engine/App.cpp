@@ -2,9 +2,15 @@
 #include "Melon.h"
 #include "Pyramid.h"
 #include "Box.h"
+#include "Sheet.h"
+#include "SkBox.h"
 #include <memory>
 #include <algorithm>
 #include "DMath.h"
+#include "Surface.h"
+#include "TextureManager.h"
+
+TextureManager gdipm;
 
 App::App() : win(800, 600, "DenginX")
 {
@@ -34,6 +40,16 @@ App::App() : win(800, 600, "DenginX")
 					win, rng, adist, ddist,
 					odist, rdist, longdist, latdist
 					);
+			case 3:
+				return std::make_unique<Sheet>(
+					win, rng, adist, ddist,
+					odist, rdist
+					);
+			case 4:
+				return std::make_unique<SkBox>(
+					win, rng, adist, ddist,
+					odist, rdist
+					);
 			default:
 				assert(false && "bad drawable type in factory");
 				return {};
@@ -49,13 +65,12 @@ App::App() : win(800, 600, "DenginX")
 		std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
 		std::uniform_int_distribution<int> latdist{ 5,20 };
 		std::uniform_int_distribution<int> longdist{ 10,40 };
-		std::uniform_int_distribution<int> typedist{ 0,2 };
+		std::uniform_int_distribution<int> typedist{ 0,4 };
 	};
 
-	MakeObject make(win.D3g());
 	drawables.reserve(nDrawables);
-	std::generate_n(std::back_inserter(drawables), nDrawables, make);
-	
+	std::generate_n(std::back_inserter(drawables), nDrawables, MakeObject{ win.D3g() });
+
 	win.D3g().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 
 }
@@ -105,7 +120,7 @@ void App::DoFrame()
 	win.D3g().ClearBuffer(0.07f, 0.0f, 0.12f);
 	for (auto& d : drawables)
 	{
-		d->Update(dt);
+		d->Update(win.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 		d->Draw(win.D3g());
 	}
 	win.D3g().EndFrame();

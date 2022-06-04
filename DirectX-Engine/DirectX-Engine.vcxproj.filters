@@ -43,6 +43,12 @@
     <Filter Include="Pliki źródłowe\Object">
       <UniqueIdentifier>{edd87499-41e0-4934-8282-fe9b9e2c3fcd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Texture">
+      <UniqueIdentifier>{c4a9cdb8-ba45-42a0-b5b0-4ac7e7412602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Texture">
+      <UniqueIdentifier>{da799009-ffb2-421e-bfef-2c7e08110ff4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -133,6 +139,24 @@
       <Filter>Pliki źródłowe\Object</Filter>
     </ClCompile>
     <ClCompile Include="Pyramid.cpp">
+      <Filter>Pliki źródłowe\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Pliki źródłowe\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Sheet.cpp">
+      <Filter>Pliki źródłowe\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Pliki źródłowe\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampler.cpp">
+      <Filter>Pliki źródłowe\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>Pliki źródłowe\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="SkBox.cpp">
       <Filter>Pliki źródłowe\Object</Filter>
     </ClCompile>
   </ItemGroup>
@@ -269,6 +293,24 @@
     <ClInclude Include="Sphere.h">
       <Filter>Pliki nagłówkowe\Object</Filter>
     </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Pliki nagłówkowe\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Sheet.h">
+      <Filter>Pliki nagłówkowe\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Pliki nagłówkowe\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampler.h">
+      <Filter>Pliki nagłówkowe\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SkBox.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX-Engine.rc">
@@ -277,6 +319,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="DenginX.ico">
+      <Filter>Pliki zasobów</Filter>
+    </Image>
+    <Image Include="Resource\tex.png">
       <Filter>Pliki zasobów</Filter>
     </Image>
   </ItemGroup>
@@ -302,6 +347,12 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="ColorBlendVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TextureVertex.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturePixel.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

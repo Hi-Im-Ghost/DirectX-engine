@@ -86,7 +86,7 @@ Box::Box(Graphics& gfx,
 
 	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
 
-	// model deformation transform (per instance, not stored as bind)
+	// Przekształcenie/Deformacaj modelu dla każdej instancji
 	dx::XMStoreFloat3x3(
 		&mt,
 		dx::XMMatrixScaling(1.0f, 1.0f, bdist(rng))
