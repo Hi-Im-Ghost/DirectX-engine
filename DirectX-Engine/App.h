@@ -15,8 +15,6 @@ private:
 private:
 	Window win;
 	Timer timer;
-	std::vector<std::unique_ptr<class Drawable>> drawables;
-	//Liczba obiektów
-	static constexpr size_t nDrawables = 180;
+	std::vector<std::unique_ptr<class Box>> boxes;
 };
 
