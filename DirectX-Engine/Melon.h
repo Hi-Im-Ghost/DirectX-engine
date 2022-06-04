@@ -1,19 +1,21 @@
 #pragma once
 #include "DrawableBase.h"
 
-class Box : public DrawableBase<Box>
+//Klasa do tworzenia melonów
+class Melon : public DrawableBase<Melon>
 {
 public:
-	Box(Graphics& gfx, std::mt19937& rng,
+	Melon(Graphics& gfx, std::mt19937& rng,
 		std::uniform_real_distribution<float>& adist,
 		std::uniform_real_distribution<float>& ddist,
 		std::uniform_real_distribution<float>& odist,
 		std::uniform_real_distribution<float>& rdist,
-		std::uniform_real_distribution<float>& bdist);
+		std::uniform_int_distribution<int>& longdist,
+		std::uniform_int_distribution<int>& latdist);
 	void Update(float dt) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 private:
-	// zmienne pozycjonujące
+	// Pozycjoniwanie
 	float r;
 	float roll = 0.0f;
 	float pitch = 0.0f;
@@ -21,16 +23,11 @@ private:
 	float theta;
 	float phi;
 	float chi;
-
-	// prędkość (delta/s)
-	/* zmiana w przestrzeni wymiarowej kostki */
+	// Predkosc (delta/s)
 	float droll;
 	float dpitch;
 	float dyaw;
-	/* zmiana w przestrzeni wymiarowej świata */
 	float dtheta;
 	float dphi;
 	float dchi;
-	// Przekształcenie modelu
-	DirectX::XMFLOAT3X3 mt;
 };

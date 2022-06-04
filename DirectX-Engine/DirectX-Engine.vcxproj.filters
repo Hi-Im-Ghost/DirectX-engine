@@ -37,6 +37,12 @@
     <Filter Include="Pliki nagłówkowe\Drawable">
       <UniqueIdentifier>{93975da5-1591-4678-bbdc-b1f59b634b6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Object">
+      <UniqueIdentifier>{910c353a-a9d5-4bef-b919-629625677980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Object">
+      <UniqueIdentifier>{1318b4b1-5675-41aa-bdfe-81d43312ecb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -122,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Pliki źródłowe\Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Melon.cpp">
+      <Filter>Pliki źródłowe\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Pyramid.cpp">
+      <Filter>Pliki źródłowe\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,6 +242,33 @@
     <ClInclude Include="DrawableBase.h">
       <Filter>Pliki nagłówkowe\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="DMath.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTranglesList.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Cone.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Prism.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Pyramid.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Melon.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX-Engine.rc">
@@ -253,10 +292,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="VertexShader.hlsl">
+    <FxCompile Include="ColorBlendPS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader.hlsl">
+    <FxCompile Include="ColorBlendVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorIndexPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorIndexVS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
