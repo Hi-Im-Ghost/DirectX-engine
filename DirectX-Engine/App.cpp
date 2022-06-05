@@ -11,10 +11,9 @@
 #include "TextureManager.h"
 
 #include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_win32.h"
-#include "ImGui/imgui_impl_dx11.h"
 
 TextureManager gdipm;
+namespace dx = DirectX;
 
 App::App() : win(800, 600, "DenginX")
 {
@@ -75,7 +74,7 @@ App::App() : win(800, 600, "DenginX")
 	drawables.reserve(nDrawables);
 	std::generate_n(std::back_inserter(drawables), nDrawables, MakeObject{ win.D3g() });
 
-	win.D3g().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
+	win.D3g().SetProjection(dx::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 0.5f, 40.0f));
 
 }
 
@@ -120,27 +119,26 @@ void App::DoFrame()
 		0.0f
 	);
 	win.D3g().DoFrame();*/
-	auto dt = timer.Mark();
-	win.D3g().ClearBuffer(0.07f, 0.0f, 0.12f);
+	const auto dt = timer.Mark() * speed_factor;
+	win.D3g().BeginFrame(0.07f, 0.0f, 0.12f);
+	win.D3g().SetCamera(cam.GetMatrix());
 	for (auto& d : drawables)
 	{
 		d->Update(win.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 		d->Draw(win.D3g());
 	}
 
-	// imgui
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
-	static bool show_demo_window = true;
-	if (show_demo_window)
+	// Okno imgui to kotnroli predkosci poruszania sie obiektow
+	if (ImGui::Begin("Symulacja Predkosci"))
 	{
-		ImGui::ShowDemoWindow(&show_demo_window);
+		ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 4.0f);
+		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text("Status: %s", win.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING (wcisnij spacje by zatrzymac)");
 	}
-	ImGui::Render();
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	ImGui::End();
 
+	// okno imgui do sterowania kamera
+	cam.SpawnControlWindow();
 
 	win.D3g().EndFrame();
 }

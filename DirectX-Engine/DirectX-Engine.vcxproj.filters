@@ -99,9 +99,6 @@
     <ClCompile Include="ImGui\imgui_impl_win32.cpp">
       <Filter>Pliki źródłowe\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\imgui_tables.cpp">
-      <Filter>Pliki źródłowe\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
       <Filter>Pliki źródłowe\ImGui</Filter>
     </ClCompile>
@@ -144,9 +141,6 @@
     <ClCompile Include="TextureManager.cpp">
       <Filter>Pliki źródłowe\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Sheet.cpp">
-      <Filter>Pliki źródłowe\Texture</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Pliki źródłowe\Texture</Filter>
     </ClCompile>
@@ -163,6 +157,12 @@
       <Filter>Pliki źródłowe\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImguiManager.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="Sheet.cpp">
+      <Filter>Pliki źródłowe\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
@@ -302,9 +302,6 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Pliki nagłówkowe\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Sheet.h">
-      <Filter>Pliki nagłówkowe\Texture</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Pliki nagłówkowe\Texture</Filter>
     </ClInclude>
@@ -318,6 +315,12 @@
       <Filter>Pliki nagłówkowe\Object</Filter>
     </ClInclude>
     <ClInclude Include="ImguiManager.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Sheet.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>

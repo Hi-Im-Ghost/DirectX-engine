@@ -4,8 +4,8 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include "GraphicsThrowMacros.h"
-
 #include "ImGui/imgui_impl_dx11.h"
+#include "imgui/imgui_impl_win32.h"
 
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
@@ -113,9 +113,19 @@ Graphics::Graphics(HWND hWnd)
 	/* ImGUI */
 	ImGui_ImplDX11_Init(gDevice.Get(), gContext.Get());
 }
+Graphics::~Graphics()
+{
+	ImGui_ImplDX11_Shutdown();
+}
 
 void Graphics::EndFrame()
 {
+	// imgui frame end
+	if (imguiEnabled)
+	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	}
 	HRESULT hr;
 #ifndef NDEBUG //Jesli w trybie debugowania to wywołujemy menedazer aby uzyskac wszystkie informacje
 	infoManager.Set();
@@ -134,17 +144,48 @@ void Graphics::EndFrame()
 	}
 }
 
-void Graphics::ClearBuffer(float red, float green, float blue) noexcept
+void Graphics::BeginFrame(float red, float green, float blue) noexcept
 {
+	// imgui begin frame
+	if (imguiEnabled)
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
 	const float color[] = { red,green,blue,1.0f };
 	gContext->ClearRenderTargetView(gTarget.Get(), color);
 	gContext->ClearDepthStencilView(gDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+}
+void Graphics::EnableImgui() noexcept
+{
+	imguiEnabled = true;
+}
+
+void Graphics::DisableImgui() noexcept
+{
+	imguiEnabled = false;
+}
+
+bool Graphics::IsImguiEnabled() const noexcept
+{
+	return imguiEnabled;
 }
 
 void Graphics::DrawIndexed(UINT count) noexcept(!IS_DEBUG)
 {
 	//Rysuj
 	GFX_THROW_INFO_ONLY(gContext->DrawIndexed(count, 0u, 0u));
+}
+
+void Graphics::SetCamera(DirectX::FXMMATRIX cam) noexcept
+{
+	camera = cam;
+}
+
+DirectX::XMMATRIX Graphics::GetCamera() const noexcept
+{
+	return camera;
 }
 
 void Graphics::SetProjection(DirectX::FXMMATRIX proj) noexcept

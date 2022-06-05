@@ -18,19 +18,31 @@ public:
 	Graphics(HWND hWnd);
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
-	~Graphics() = default;
+	~Graphics();
 	// Bufor tylni
 	void EndFrame();
-	void ClearBuffer(float red, float green, float blue) noexcept;
+	void BeginFrame(float red, float green, float blue) noexcept;
 	void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
-
+	//Metoda do tworzenia kamery
+	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
+	//Metoda do pobierania pozycji kamery
+	DirectX::XMMATRIX GetCamera() const noexcept;
+	//Metoda do wlaczania imgui
+	void EnableImgui() noexcept;
+	//Metoda do wlaczania imgui
+	void DisableImgui() noexcept;
+	//Metoda do sprawdzania czy jest wlaczone imgui
+	bool IsImguiEnabled() const noexcept;
 	//Metoda do rysowania trójkątów
 	//void DrawCube(float x, float y, float z, float rotationX, float rotationY, float rotationZ);
 
 private:
 	DirectX::XMMATRIX projection;
+	DirectX::XMMATRIX camera;
+	//Zmienna do sprawdzania czy jest wlaczone okno imgui
+	bool imguiEnabled = true;
 #ifndef NDEBUG //Zamiesci nazwe menadażera ale tylko w tybie debugowania
 	DxgInfo infoManager;
 #endif
