@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <memory>
 
-
+//Klasa powierzchni
 class Surface
 {
 public:

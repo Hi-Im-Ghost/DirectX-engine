@@ -49,6 +49,12 @@
     <Filter Include="Pliki źródłowe\Texture">
       <UniqueIdentifier>{da799009-ffb2-421e-bfef-2c7e08110ff4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Light">
+      <UniqueIdentifier>{44327628-9574-4187-b5ff-3198bcca3bc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Light">
+      <UniqueIdentifier>{d680ea28-736b-4d3f-a195-7661cfc23e90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -132,9 +138,6 @@
     <ClCompile Include="VertexShader.cpp">
       <Filter>Pliki źródłowe\Bindable</Filter>
     </ClCompile>
-    <ClCompile Include="Melon.cpp">
-      <Filter>Pliki źródłowe\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Pyramid.cpp">
       <Filter>Pliki źródłowe\Object</Filter>
     </ClCompile>
@@ -159,11 +162,17 @@
     <ClCompile Include="ImguiManager.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="Sheet.cpp">
-      <Filter>Pliki źródłowe\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSphere.cpp">
+      <Filter>Pliki źródłowe\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Pliki źródłowe\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder.cpp">
+      <Filter>Pliki źródłowe\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,9 +290,6 @@
     <ClInclude Include="Cube.h">
       <Filter>Pliki nagłówkowe\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Melon.h">
-      <Filter>Pliki nagłówkowe\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Plane.h">
       <Filter>Pliki nagłówkowe\Object</Filter>
     </ClInclude>
@@ -317,11 +323,20 @@
     <ClInclude Include="ImguiManager.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Sheet.h">
-      <Filter>Pliki nagłówkowe\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSphere.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Pliki nagłówkowe\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="TestObject.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Cylinder.h">
+      <Filter>Pliki nagłówkowe\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -365,6 +380,33 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="TexturePixel.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="SolidPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="SolidVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="IndexedPhongPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="BlendedPhongPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="BlendedPhongVS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedPhongPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedPhongVS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
